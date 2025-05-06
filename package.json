@@ -1,0 +1,36 @@
+{
+  "name": "sr-cli",
+  "version": "0.0.1",
+  "type": "commonjs",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "bin": {
+    "sr-cli": "./dist/bin/cli.js"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "schematics"
+  ],
+  "keywords": [
+    "cli",
+    "herramienta",
+    "node"
+  ],
+  "author": "sorodriguezz",
+  "license": "MIT",
+  "description": "CLI tool for generating projects and components",
+  "dependencies": {
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0",
+    "inquirer": "^12.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.9",
+    "typescript": "^5.0.0"
+  }
+}
