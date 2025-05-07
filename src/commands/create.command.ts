@@ -2,118 +2,23 @@ import inquirer from "inquirer";
 import { copyTemplate } from "../utils/copy-template";
 import path from "path";
 import fs from "fs";
-
-interface Answers {
-  name: string;
-  projectType: "backend" | "frontend";
-  language?: "javascript" | "typescript" | "java" | "python";
-  framework: string;
-  bundler?: "vite" | "webpack";
-  feature: string;
-  db?: string;
-}
+import { TemplateManager } from "../core/template-manager";
 
 export class CreateCommand {
+  private templateManager: TemplateManager;
+
+  constructor() {
+    this.templateManager = new TemplateManager();
+  }
+
   async execute() {
-    const questions: any = [
-      {
-        type: "input",
-        name: "name",
-        message: "Nombre del proyecto:",
-      },
-      {
-        name: "projectType",
-        type: "list",
-        message: "¿Qué tipo de proyecto?",
-        choices: ["backend", "frontend"],
-      },
-      {
-        name: "language",
-        type: "list",
-        message: "¿Qué lenguaje quieres usar?",
-        choices: (answers: Answers) => {
-          return answers.projectType === "backend"
-            ? ["javascript", "typescript", "java", "python"]
-            : ["javascript", "typescript"];
-        },
-      },
-      {
-        name: "framework",
-        type: "list",
-        message: "¿Qué framework quieres usar?",
-        choices: (answers: Answers) => {
-          if (answers.projectType === "frontend") return ["react"];
-
-          switch (answers.language) {
-            case "javascript":
-            case "typescript":
-              return [
-                "express",
-                "bun",
-                ...(answers.language === "typescript" ? ["nestjs"] : []),
-              ];
-            case "java":
-              return ["springboot"];
-            case "python":
-              return ["flask"];
-            default:
-              return [];
-          }
-        },
-      },
-      {
-        name: "bundler",
-        type: "list",
-        message: "¿Qué bundler quieres usar?",
-        choices: ["vite", "webpack"],
-        when: (answers: Answers) =>
-          (answers.language === "javascript" ||
-            answers.language === "typescript") &&
-          answers.framework !== "nestjs",
-      },
-      {
-        name: "feature",
-        type: "list",
-        message: "¿Qué características necesitas?",
-        choices: ["basic", "auth"],
-      },
-      {
-        name: "db",
-        type: "list",
-        message: "¿Qué base de datos?",
-        choices: ["mongo", "mysql", "postgres"],
-        when: (answers: Answers) => answers.projectType === "backend",
-      },
-    ];
-
-    const answers = await inquirer.prompt(questions);
-    const { name, projectType, language, framework, bundler, feature, db } =
-      answers;
-
+    const options = await this.templateManager.promptOptions();
     const projectRoot = path.resolve(__dirname, "..", "..");
-
-    const templateSegments = ["templates", projectType];
-
-    if (projectType === "backend") {
-      if (language === "javascript" || language === "typescript") {
-        templateSegments.push(
-          "nodejs",
-          language,
-          framework,
-          bundler || "",
-          feature,
-          db || ""
-        );
-      } else {
-        templateSegments.push(language!, framework, feature, db || "");
-      }
-    } else {
-      templateSegments.push(framework, feature, db || "");
-    }
-
-    const cleanSegments = templateSegments.filter(Boolean);
-    const templatePath = path.resolve(projectRoot, ...cleanSegments);
-    const destination = path.resolve(process.cwd(), name);
+    const templatePath = this.templateManager.getTemplatePath(
+      projectRoot,
+      options
+    );
+    const destination = path.resolve(process.cwd(), options.name);
 
     console.log("Template path:", templatePath);
     console.log("Project root:", projectRoot);
@@ -128,19 +33,20 @@ export class CreateCommand {
 
     await copyTemplate(templatePath, destination, {
       replacements: {
-        [`"name": "cli"`]: `"name": "${name}"`,
+        [`"name": "cli"`]: `"name": "${options.name}"`,
       },
     });
 
+    // Add .gitkeep to empty directories
     this.addGitKeepToEmptyDirs(destination);
 
-    console.log(`✅ Proyecto ${name} creado:`);
-    console.log(`  - Tipo: ${projectType}`);
-    console.log(`  - Lenguaje: ${language}`);
-    console.log(`  - Framework: ${framework}`);
-    if (bundler) console.log(`  - Bundler: ${bundler}`);
-    console.log(`  - Características: ${feature}`);
-    if (db) console.log(`  - Base de datos: ${db}`);
+    console.log(`✅ Proyecto ${options.name} creado:`);
+    console.log(`  - Tipo: ${options.projectType}`);
+    console.log(`  - Lenguaje: ${options.language}`);
+    console.log(`  - Framework: ${options.framework}`);
+    if (options.bundler) console.log(`  - Bundler: ${options.bundler}`);
+    console.log(`  - Características: ${options.feature}`);
+    if (options.db) console.log(`  - Base de datos: ${options.db}`);
   }
 
   private addGitKeepToEmptyDirs(dir: string) {
