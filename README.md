@@ -4,10 +4,14 @@ Una herramienta de línea de comandos (CLI) para generar proyectos y componentes
 
 ## Características
 
-- Generación de proyectos con diferentes tecnologías (Vite, Express)
-- Soporte para diferentes arquitecturas (Clean, MVC)
+- Generación de proyectos Backend y Frontend
+- Múltiples lenguajes soportados (TypeScript, JavaScript, Java, Python)
+- Diversos frameworks disponibles (Express, NestJS, Spring Boot, Flask, React)
+- Opciones de bundling (Vite, Webpack)
+- Plantillas con autenticación incluida
+- Soporte para múltiples bases de datos (MongoDB, MySQL, PostgreSQL)
 - Generación de componentes (controllers, services)
-- Templates personalizables
+- Docker Compose incluido en templates seleccionados
 - Soporte completo para TypeScript
 
 ## Instalación
@@ -32,8 +36,36 @@ sr-cli create
 
 Este comando iniciará un asistente interactivo que te preguntará:
 1. Nombre del proyecto
-2. Tipo de proyecto (vite, express)
-3. Arquitectura (clean, mvc)
+2. Tipo de proyecto (backend/frontend)
+3. Lenguaje de programación
+4. Framework
+5. Bundler (cuando aplique)
+6. Características (auth/basic)
+7. Base de datos
+
+### Templates Disponibles
+
+#### Backend
+- **Java**
+  - Spring Boot
+    - Auth/Basic templates
+    - MongoDB/MySQL/PostgreSQL
+- **NodeJS**
+  - Express (JavaScript/TypeScript)
+    - Vite/Webpack bundling
+    - Auth/Basic templates
+    - MongoDB/MySQL/PostgreSQL
+  - NestJS
+    - Vite/Webpack bundling
+- **Python**
+  - Flask
+    - Auth/Basic templates
+    - MongoDB/MySQL/PostgreSQL
+
+#### Frontend
+- **React**
+  - Auth/Basic templates
+  - Integración con bases de datos
 
 ### Generar componentes
 
@@ -55,44 +87,45 @@ sr-cli generate controller users
 ```bash
 sr-cli --help          # Muestra la ayuda general
 sr-cli generate --help # Muestra la ayuda específica del comando generate
-sr-cli --version       # Muestra la versión actual
+sr-cli --version      # Muestra la versión actual
 ```
 
-## Uso como librería
+## Estructura de directorios ejemplo (TypeScript + Express + Auth + MongoDB)
 
-También puedes usar sr-cli como una librería en tu código:
-
-```typescript
-import { CreateCommand, GenerateCommand } from 'sr-cli';
-
-// Crear un nuevo proyecto
-const creator = new CreateCommand();
-await creator.execute();
-
-// Generar un componente
-const generator = new GenerateCommand();
-generator.execute(['controller', 'users']);
-```
-
-## Estructura de directorios generada
-
-### Proyecto Vite (Clean Architecture)
 ```
 └── tu-proyecto/
     ├── src/
-    │   ├── components/
-    │   │   └── HelloWorld.ts
-    │   └── main.ts
-    ├── index.html
+    │   ├── app.ts
+    │   ├── config/
+    │   │   ├── bcrypt.adapter.ts
+    │   │   ├── envs.ts
+    │   │   ├── jwt.adapter.ts
+    │   │   └── validators.ts
+    │   ├── data/
+    │   │   └── mongodb/
+    │   ├── domain/
+    │   │   ├── entities/
+    │   │   ├── datasources/
+    │   │   ├── repositories/
+    │   │   └── use-cases/
+    │   ├── infrastructure/
+    │   │   ├── datasources/
+    │   │   ├── repositories/
+    │   │   └── mappers/
+    │   └── presentation/
+    │       ├── routes.ts
+    │       ├── server.ts
+    │       └── middlewares/
+    ├── docker-compose.yml
     ├── package.json
-    ├── tsconfig.json
-    └── vite.config.ts
+    └── tsconfig.json
 ```
 
 ## Requisitos
 
 - Node.js v16 o superior
 - npm v7 o superior
+- Docker y Docker Compose (para templates con bases de datos)
 
 ## Contribuir
 
