@@ -11,11 +11,11 @@ export class AuthController {
 
     private handleError = (error: unknown, res: Response) => {
         if (error instanceof CustomError) {
-            return res.status(error.statusCode).json({error: error.message});
+            res.status(error.statusCode).json({error: error.message});
         }
 
         console.log(error); // logger winston
-        return res.status(500).json({error: 'Internal Server Error'});
+        res.status(500).json({error: 'Internal Server Error'});
     }
 
     registerUser = (req: Request, res: Response) => {
