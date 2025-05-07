@@ -32,7 +32,7 @@ export class CreateCommand {
         choices: (answers: Answers) => {
           return answers.projectType === "backend"
             ? ["express", "springboot", "flask"]
-            : ["vite", "next", "react"];
+            : ["react"];
         }
       },
       {
