@@ -1,4 +1,4 @@
-# sr-cli
+# kit-cli
 
 Una herramienta de línea de comandos (CLI) para generar proyectos y componentes de forma rápida y sencilla.
 
@@ -18,12 +18,12 @@ Una herramienta de línea de comandos (CLI) para generar proyectos y componentes
 
 ### Global
 ```bash
-npm install -g sr-cli
+npm install -g kit-cli
 ```
 
 ### Local en un proyecto
 ```bash
-npm install sr-cli
+npm install kit-cli
 ```
 
 ## Uso
@@ -31,7 +31,7 @@ npm install sr-cli
 ### Crear un nuevo proyecto
 
 ```bash
-sr-cli create
+kit-cli create
 ```
 
 Este comando iniciará un asistente interactivo que te preguntará:
@@ -70,7 +70,7 @@ Este comando iniciará un asistente interactivo que te preguntará:
 ### Generar componentes
 
 ```bash
-sr-cli generate <tipo> <nombre>
+kit-cli generate <tipo> <nombre>
 ```
 
 Tipos disponibles:
@@ -79,15 +79,15 @@ Tipos disponibles:
 
 Ejemplo:
 ```bash
-sr-cli generate controller users
+kit-cli generate controller users
 ```
 
 ### Comandos disponibles
 
 ```bash
-sr-cli --help          # Muestra la ayuda general
-sr-cli generate --help # Muestra la ayuda específica del comando generate
-sr-cli --version      # Muestra la versión actual
+kit-cli --help          # Muestra la ayuda general
+kit-cli generate --help # Muestra la ayuda específica del comando generate
+kit-cli --version      # Muestra la versión actual
 ```
 
 ## Estructura de directorios ejemplo (TypeScript + Express + Auth + MongoDB)

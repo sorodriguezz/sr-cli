@@ -1,5 +1,5 @@
 {
-  "name": "sr-cli",
+  "name": "kit-cli",
   "version": "0.0.1",
   "type": "commonjs",
   "main": "./dist/index.js",
@@ -9,7 +9,7 @@
     "prepublishOnly": "npm run build"
   },
   "bin": {
-    "sr-cli": "./dist/bin/cli.js"
+    "kit-cli": "./dist/bin/cli.js"
   },
   "files": [
     "dist",

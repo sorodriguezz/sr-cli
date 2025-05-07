@@ -7,7 +7,7 @@ export function createProgram() {
   const program = new Command();
 
   program
-    .name('sr-cli')
+    .name('kit-cli')
     .description('CLI para generación de proyectos y componentes')
     .version(version);
 

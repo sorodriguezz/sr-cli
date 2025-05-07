@@ -6,7 +6,7 @@ export class GenerateCommand {
     const [type, name] = args;
 
     if (!type || !name) {
-      console.error("❌ Uso: sr-cli generate <tipo> <nombre>");
+      console.error("❌ Uso: kit-cli generate <tipo> <nombre>");
       return;
     }
 
