@@ -1,4 +1,3 @@
-import inquirer from "inquirer";
 import { copyTemplate } from "../utils/copy-template";
 import path from "path";
 import fs from "fs";
@@ -37,7 +36,6 @@ export class CreateCommand {
       },
     });
 
-    // Add .gitkeep to empty directories
     this.addGitKeepToEmptyDirs(destination);
 
     console.log(`✅ Proyecto ${options.name} creado:`);
